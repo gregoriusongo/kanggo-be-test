@@ -27,6 +27,50 @@ const loginSchema = z.object({
 	}),
 });
 
+// Response schemas
+const AuthResponseSchema = z.object({
+	user: z.object({
+		id: z.number(),
+		fullname: z.string(),
+		email: z.string(),
+		role: z.enum(["customer", "admin"]),
+	}),
+	token: z.string(),
+});
+
+// Register OpenAPI paths
+authRegistry.registerPath({
+	method: "post",
+	path: "/auth/register",
+	tags: ["Authentication"],
+	request: {
+		body: {
+			content: {
+				"application/json": {
+					schema: registerSchema.shape.body,
+				},
+			},
+		},
+	},
+	responses: createApiResponse(AuthResponseSchema, "User registered successfully"),
+});
+
+authRegistry.registerPath({
+	method: "post",
+	path: "/auth/login",
+	tags: ["Authentication"],
+	request: {
+		body: {
+			content: {
+				"application/json": {
+					schema: loginSchema.shape.body,
+				},
+			},
+		},
+	},
+	responses: createApiResponse(AuthResponseSchema, "User logged in successfully"),
+});
+
 // Routes
 authRouter.post("/register", validateRequest(registerSchema), authController.register);
 authRouter.post("/login", validateRequest(loginSchema), authController.login);
