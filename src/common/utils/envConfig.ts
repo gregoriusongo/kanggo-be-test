@@ -15,6 +15,17 @@ const envSchema = z.object({
 	COMMON_RATE_LIMIT_MAX_REQUESTS: z.coerce.number().int().positive().default(1000),
 
 	COMMON_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(1000),
+
+	// Database configuration
+	DB_HOST: z.string().default("localhost"),
+	DB_PORT: z.coerce.number().int().positive().default(5432),
+	DB_USER: z.string().default("postgres"),
+	DB_PASSWORD: z.string().default("password"),
+	DB_NAME: z.string().default("craftsman_service"),
+
+	// JWT configuration
+	JWT_SECRET: z.string().default("your-secret-key"),
+	JWT_EXPIRES_IN: z.string().default("24h"),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
