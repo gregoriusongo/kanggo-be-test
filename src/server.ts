@@ -32,7 +32,7 @@ app.use(requestLogger);
 
 // Routes
 app.use("/health-check", healthCheckRouter);
-app.use("/users", userRouter);
+// app.use("/users", userRouter);
 app.use("/api/v1", authRouter);
 app.use("/api/v1/workers", workersRouter);
 app.use("/api/v1/orders", ordersRouter);

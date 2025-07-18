@@ -41,7 +41,7 @@ const AuthResponseSchema = z.object({
 // Register OpenAPI paths
 authRegistry.registerPath({
 	method: "post",
-	path: "/auth/register",
+	path: "/register",
 	tags: ["Authentication"],
 	request: {
 		body: {
@@ -57,7 +57,7 @@ authRegistry.registerPath({
 
 authRegistry.registerPath({
 	method: "post",
-	path: "/auth/login",
+	path: "/login",
 	tags: ["Authentication"],
 	request: {
 		body: {
