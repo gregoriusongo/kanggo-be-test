@@ -39,7 +39,7 @@ export class AuthService {
 				user_id: user.id,
 				email: user.email,
 				fullname: user.fullname,
-				created_at: user.created_at,
+				created_at: new Date(user.created_at).toISOString().replace("T", " ").slice(0, 19),
 			};
 
 			return ServiceResponse.success("Register Success", responseData, StatusCodes.CREATED);

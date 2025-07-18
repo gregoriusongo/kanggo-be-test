@@ -34,8 +34,8 @@ export class WorkersService {
 				worker_id: worker.id,
 				worker_name: worker.worker_name,
 				price: worker.price,
-				created_at: worker.created_at,
-				updated_at: worker.updated_at,
+				created_at: new Date(worker.created_at).toISOString().replace("T", " ").slice(0, 19),
+				updated_at: new Date(worker.updated_at).toISOString().replace("T", " ").slice(0, 19),
 			}));
 
 			return ServiceResponse.success("List Of Workers", responseData, StatusCodes.OK);
@@ -52,7 +52,7 @@ export class WorkersService {
 				worker_id: worker.id,
 				worker_name: worker.worker_name,
 				price: worker.price,
-				created_at: worker.created_at,
+				created_at: new Date(worker.created_at).toISOString().replace("T", " ").slice(0, 19)
 			};
 
 			return ServiceResponse.success("New Worker Created!", responseData, StatusCodes.CREATED);

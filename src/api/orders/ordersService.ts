@@ -69,7 +69,7 @@ export class OrdersService {
 				total_day: totalDays,
 				status: "paid",
 				total_price: totalPrice,
-				created_at: order.created_at,
+				created_at: new Date(order.created_at).toISOString().replace("T", " ").slice(0, 19),
 			};
 
 			return ServiceResponse.success("Order Created", responseData, StatusCodes.CREATED);
@@ -100,11 +100,15 @@ export class OrdersService {
 
 			const updatedOrder = await this.ordersRepository.updateOrderStatus(orderId, "cancel");
 
+			if (!updatedOrder) {
+				return ServiceResponse.failure("Failed to update order status", null, StatusCodes.INTERNAL_SERVER_ERROR);
+			}
+
 			const responseData = {
-				order_id: updatedOrder?.id,
+				order_id: updatedOrder.id,
 				status: "cancel",
-				created_at: updatedOrder?.created_at,
-				updated_at: updatedOrder?.updated_at,
+				created_at: new Date(updatedOrder.created_at).toISOString().replace("T", " ").slice(0, 19),
+				updated_at: new Date(updatedOrder.updated_at).toISOString().replace("T", " ").slice(0, 19)
 			};
 
 			return ServiceResponse.success("Order Canceled", responseData, StatusCodes.OK);

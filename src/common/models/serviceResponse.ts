@@ -2,13 +2,13 @@ import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
 
 export class ServiceResponse<T = null> {
-	readonly success: boolean;
+	readonly success: string;
 	readonly message: string;
 	readonly responseObject: T;
 	readonly statusCode: number;
 
 	private constructor(success: boolean, message: string, responseObject: T, statusCode: number) {
-		this.success = success;
+		this.success = success ? "success" : "failed";
 		this.message = message;
 		this.responseObject = responseObject;
 		this.statusCode = statusCode;
