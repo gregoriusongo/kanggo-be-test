@@ -1,6 +1,4 @@
-# Craftsman Service Backend API
-
-Backend service for online craftsman booking system built with Express.js, TypeScript, and PostgreSQL.
+# Kanggo Service Backend API
 
 ## Features
 
