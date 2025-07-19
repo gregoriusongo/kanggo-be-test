@@ -1,155 +1,162 @@
-# 🚀 Express TypeScript Boilerplate 2025
+# Craftsman Service Backend API
 
-[![CI](https://github.com/edwinhern/express-typescript/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/edwinhern/express-typescript-2024/actions/workflows/ci.yml)
+Backend service for online craftsman booking system built with Express.js, TypeScript, and PostgreSQL.
 
-```code
-Hey There! 🙌
-🤾 that ⭐️ button if you like this boilerplate.
+## Features
+
+- **User Authentication**
+  - Customer registration
+  - Login with email or cellphone
+  - JWT-based authentication
+  - Role-based access control (customer/admin)
+
+- **Workers Management**
+  - List available workers (public)
+  - CRUD operations for workers (admin only)
+
+- **Order Management**
+  - Create orders with multiple workers
+  - View order history
+  - Cancel orders
+  - Automatic order status updates via cron jobs
+
+- **Scheduling**
+  - Availability checking for workers
+  - Automatic status updates (paid → active → completed)
+
+## Tech Stack
+
+- **Backend**: Express.js with TypeScript
+- **Database**: PostgreSQL with Knex.js
+- **Authentication**: JWT
+- **Scheduling**: node-cron
+- **Validation**: Zod
+- **Password Hashing**: bcryptjs
+
+## API Endpoints
+
+### Authentication
+
+- `POST /api/v1/register` - Register new customer
+- `POST /api/v1/login` - Login with email/cellphone
+
+### Workers
+
+- `GET /api/v1/workers` - Get all workers (public)
+- `GET /api/v1/workers/admin` - Get all workers with full details (admin only)
+- `POST /api/v1/workers/admin` - Create new worker (admin only)
+- `PUT /api/v1/workers/admin/:id` - Update worker (admin only)
+- `DELETE /api/v1/workers/admin/:id` - Delete worker (admin only)
+
+### Orders
+
+- `POST /api/v1/orders` - Create new order (customer only)
+- `GET /api/v1/orders` - Get user's orders (customer only)
+- `PUT /api/v1/orders/cancel_order/:order_id` - Cancel order (customer only)
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- PostgreSQL
+- pnpm (package manager)
+
+### Installation
+
+#### Option 1: Docker Installation (Recommended)
+
+1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd express-typescript
 ```
 
-## 🌟 Introduction
+2. Start the application with Docker Compose
 
-Welcome to Express TypeScript Boilerplate 2025 – a simple and ready-to-use starting point for building backend web services with Express.js and TypeScript.
-
-## 💡 Why We Made This
-
-This starter kit helps you:
-
-- ✨ Start new projects faster
-- 📊 Write clean, consistent code
-- ⚡ Build things quickly
-- 🛡️ Follow best practices for security and testing
-
-## 🚀 What's Included
-
-- 📁 Well-organized folders: Files grouped by feature so you can find things easily
-- 💨 Fast development: Quick code running with `tsx` and error checking with `tsc`
-- 🌐 Latest Node.js: Uses the newest stable Node.js version from `.tool-versions`
-- 🔧 Safe settings: Environment settings checked with Zod to prevent errors
-- 🔗 Short import paths: Clean code with easy imports using path shortcuts
-- 🔄 Auto-updates: Keeps dependencies up-to-date with Renovate
-- 🔒 Better security: Built-in protection with Helmet and CORS settings
-- 📊 Easy tracking: Built-in logging with `pino-http`
-- 🧪 Ready-to-test: Testing tools with Vitest and Supertest already set up
-- ✅ Clean code: Consistent coding style with `Biomejs`
-- 📃 Standard responses: Unified API responses using `ServiceResponse`
-- 🐳 Easy deployment: Ready for Docker containers
-- 📝 Input checking: Request validation using Zod
-- 🧩 API browser: Interactive API docs with Swagger UI
-
-## 🛠️ Getting Started
-
-### Video Demo
-
-For a visual guide, watch the [video demo](https://github.com/user-attachments/assets/b1698dac-d582-45a0-8d61-31131732b74e) to see the setup and running of the project.
-
-### Step-by-Step Guide
-
-#### Step 1: 🚀 Initial Setup
-
-- Clone the repository: `git clone https://github.com/edwinhern/express-typescript.git`
-- Navigate: `cd express-typescript`
-- Install dependencies: `pnpm install`
-
-#### Step 2: ⚙️ Environment Configuration
-
-- Create `.env`: Copy `.env.template` to `.env`
-- Update `.env`: Fill in necessary environment variables
-
-#### Step 3: 🏃‍♂️ Running the Project
-
-- Development Mode: `pnpm start:dev`
-- Building: `pnpm build`
-- Production Mode: Set `NODE_ENV="production"` in `.env` then `pnpm build && pnpm start:prod`
-
-## 🐳 Docker Setup
-
-This project includes Docker and Docker Compose configuration for easy development and deployment.
-
-### Quick Docker Start
-
-1. **Copy environment variables:**
-
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Start all services (includes PostgreSQL):**
-
-   ```bash
-   # Development mode
-   docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
-   
-   # Production mode
-   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
-   ```
-
-3. **Run database migrations:**
-
-   ```bash
-   docker-compose exec app pnpm migrate:latest
-   ```
-
-### Docker Services
-
-- **app**: Express TypeScript application (port 8080)
-- **postgres**: PostgreSQL database (port 5432)
-- **pgadmin**: Database administration tool (port 5050) - development only
-
-For detailed Docker usage instructions, see [DOCKER.md](./DOCKER.md).
-
-## 🤝 Feedback and Contributions
-
-We'd love to hear your feedback and suggestions for further improvements. Feel free to contribute and join us in making backend development cleaner and faster!
-
-🎉 Happy coding!
-
-## 📁 Folder Structure
-
-```code
-├── biome.json
-├── Dockerfile
-├── LICENSE
-├── package.json
-├── pnpm-lock.yaml
-├── README.md
-├── src
-│   ├── api
-│   │   ├── healthCheck
-│   │   │   ├── __tests__
-│   │   │   │   └── healthCheckRouter.test.ts
-│   │   │   └── healthCheckRouter.ts
-│   │   └── user
-│   │       ├── __tests__
-│   │       │   ├── userRouter.test.ts
-│   │       │   └── userService.test.ts
-│   │       ├── userController.ts
-│   │       ├── userModel.ts
-│   │       ├── userRepository.ts
-│   │       ├── userRouter.ts
-│   │       └── userService.ts
-│   ├── api-docs
-│   │   ├── __tests__
-│   │   │   └── openAPIRouter.test.ts
-│   │   ├── openAPIDocumentGenerator.ts
-│   │   ├── openAPIResponseBuilders.ts
-│   │   └── openAPIRouter.ts
-│   ├── common
-│   │   ├── __tests__
-│   │   │   ├── errorHandler.test.ts
-│   │   │   └── requestLogger.test.ts
-│   │   ├── middleware
-│   │   │   ├── errorHandler.ts
-│   │   │   ├── rateLimiter.ts
-│   │   │   └── requestLogger.ts
-│   │   ├── models
-│   │   │   └── serviceResponse.ts
-│   │   └── utils
-│   │       ├── commonValidation.ts
-│   │       ├── envConfig.ts
-│   │       └── httpHandlers.ts
-│   ├── index.ts
-│   └── server.ts
-├── tsconfig.json
-└── vite.config.mts
+```bash
+docker compose up -d
 ```
+
+This will start:
+
+- PostgreSQL database on port `5432`
+- Express TypeScript application on port `8080`
+- pgAdmin (optional) on port `5050` for database management
+
+The application will automatically:
+
+- Set up the database schema
+- Run migrations
+- Seed initial data
+- Handle database connection retries
+
+Access the API at `http://localhost:8080`
+
+#### Option 2: Manual Installation
+
+1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd express-typescript
+```
+
+2. Install dependencies
+
+```bash
+pnpm install
+```
+
+3. Setup environment variables
+
+```bash
+cp .env.example .env
+```
+
+Update the `.env` file with your database credentials and JWT secret:
+
+```env
+NODE_ENV=development
+HOST=localhost
+PORT=8080
+CORS_ORIGIN=http://localhost:8080
+
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_NAME=kanggo-be
+
+# JWT Configuration
+JWT_SECRET=your-secret-key-here
+JWT_EXPIRES_IN=24h
+```
+
+4. Create PostgreSQL database
+
+```sql
+CREATE DATABASE kanggo-be;
+```
+
+5. Run database migrations
+
+```bash
+pnpm migrate:latest
+```
+
+6. Seed the database with sample workers
+
+```bash
+pnpm seed:run
+```
+
+7. Start the development server
+
+```bash
+pnpm start:dev
+```
+
+The API will be available at `http://localhost:8080`
