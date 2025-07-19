@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
     ports:
-      - "${DB_PORT:-15432}:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./src/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
@@ -36,7 +36,7 @@ services:
       PORT: ${PORT:-8080}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
       DB_HOST: postgres
-      DB_PORT: ${DB_PORT:-15432}
+      DB_PORT: ${DB_PORT:-5432}
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-password}
       DB_NAME: ${DB_NAME:-kanggo-be}
@@ -52,9 +52,6 @@ services:
     networks:
       - app-network
     volumes:
-      # Optional: Mount source code for development (uncomment for dev mode)
-      # - .:/app
-      # - /app/node_modules
       - app_logs:/app/logs
 
   # Optional: pgAdmin for database management
@@ -64,7 +61,7 @@ services:
     restart: unless-stopped
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-password}
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     depends_on:
