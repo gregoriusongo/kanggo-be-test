@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:16-alpine
+    container_name: express-postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-kanggo-be}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-kanggo-be}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Express TypeScript Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: express-typescript-app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      HOST: ${HOST:-0.0.0.0}
+      PORT: ${PORT:-8080}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      DB_HOST: postgres
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME: ${DB_NAME:-kanggo-be}
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+      COMMON_RATE_LIMIT_MAX_REQUESTS: ${COMMON_RATE_LIMIT_MAX_REQUESTS:-1000}
+      COMMON_RATE_LIMIT_WINDOW_MS: ${COMMON_RATE_LIMIT_WINDOW_MS:-1000}
+    ports:
+      - "${PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      # Optional: Mount source code for development (uncomment for dev mode)
+      # - .:/app
+      # - /app/node_modules
+      - app_logs:/app/logs
+
+  # Optional: pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: express-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+  app_logs:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

@@ -62,6 +62,42 @@ For a visual guide, watch the [video demo](https://github.com/user-attachments/a
 - Building: `pnpm build`
 - Production Mode: Set `NODE_ENV="production"` in `.env` then `pnpm build && pnpm start:prod`
 
+## 🐳 Docker Setup
+
+This project includes Docker and Docker Compose configuration for easy development and deployment.
+
+### Quick Docker Start
+
+1. **Copy environment variables:**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Start all services (includes PostgreSQL):**
+
+   ```bash
+   # Development mode
+   docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+   
+   # Production mode
+   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+   ```
+
+3. **Run database migrations:**
+
+   ```bash
+   docker-compose exec app pnpm migrate:latest
+   ```
+
+### Docker Services
+
+- **app**: Express TypeScript application (port 8080)
+- **postgres**: PostgreSQL database (port 5432)
+- **pgadmin**: Database administration tool (port 5050) - development only
+
+For detailed Docker usage instructions, see [DOCKER.md](./DOCKER.md).
+
 ## 🤝 Feedback and Contributions
 
 We'd love to hear your feedback and suggestions for further improvements. Feel free to contribute and join us in making backend development cleaner and faster!

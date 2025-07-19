@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Development overrides for the app service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base  # Use base stage for development
+    command: pnpm start:dev
+    environment:
+      NODE_ENV: development
+    volumes:
+      # Mount source code for hot reloading
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+    ports:
+      - "8080:8080"
+      - "9229:9229"  # Debug port
+
+  # Keep postgres and pgadmin as they are
+  postgres:
+    ports:
+      - "5432:5432"
+    
+  pgadmin:
+    ports:
+      - "5050:80"
