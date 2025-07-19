@@ -7,7 +7,7 @@ import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 import { createApiResponse } from "@/api-docs/openAPIResponseBuilders";
 
 export const workersRegistry = new OpenAPIRegistry();
-const workersRouter = Router();
+const workersRouter: Router = Router();
 const workersController = new WorkersController();
 
 // Admin routes

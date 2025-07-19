@@ -7,7 +7,7 @@ import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 import { createApiResponse } from "@/api-docs/openAPIResponseBuilders";
 
 export const ordersRegistry = new OpenAPIRegistry();
-const ordersRouter = Router();
+const ordersRouter: Router = Router();
 const ordersController = new OrdersController();
 
 const createOrderSchema = z.object({

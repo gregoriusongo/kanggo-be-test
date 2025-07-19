@@ -6,7 +6,7 @@ import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 import { createApiResponse } from "@/api-docs/openAPIResponseBuilders";
 
 export const authRegistry = new OpenAPIRegistry();
-export const authRouter = Router();
+export const authRouter: Router = Router();
 
 // Register validation schema
 const registerSchema = z.object({
