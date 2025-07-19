@@ -67,8 +67,8 @@
 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd express-typescript
+git clone https://github.com/gregoriusongo/kanggo-be-test
+cd kanggo-be-test
 ```
 
 2. Start the application with Docker Compose
@@ -97,8 +97,8 @@ Access the API at `http://localhost:8080`
 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd express-typescript
+git clone (https://github.com/gregoriusongo/kanggo-be-test
+cd kanggo-be-test
 ```
 
 2. Install dependencies
