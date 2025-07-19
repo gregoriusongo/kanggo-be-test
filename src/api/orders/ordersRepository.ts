@@ -43,7 +43,7 @@ export class OrdersRepository {
 					total_day: row.total_day,
 					total_price: row.total_price,
 					workers: [],
-					created_at: new Date(row.created_at).toISOString().replace("T", " ").slice(0, 19),
+					created_at: new Date(row.created_at),
 				});
 			}
 
